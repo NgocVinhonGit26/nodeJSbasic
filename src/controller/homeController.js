@@ -5,10 +5,10 @@ let getHomepage = (req, res) => {
     let data = []
 
     connection.query(
-        'SELECT * FROM `users` ',
+        'SELECT * FROM `user` ',
         function (err, results, fields) {
             console.log('>>> check mysql')
-            console.log(results); // results contains rows returned by server
+            // console.log(results); // results contains rows returned by server
             results.map((row) => {
                 data.push({
                     id: row.id,
@@ -18,7 +18,7 @@ let getHomepage = (req, res) => {
                     address: row.address
                 })
             });
-            return res.render('index.ejs', { dataUser: JSON.stringify(data) })
+            return res.render('index.ejs', { dataUser: data, test: 'abc tring test' })
 
         })
 }
