@@ -1,28 +1,20 @@
 import { json } from 'body-parser'
-import connection from '../configs/connectDB'
+import req from 'express/lib/request'
+import res from 'express/lib/response'
+import pool from '../configs/connectDB'
 
-let getHomepage = (req, res) => {
-    let data = []
+let getHomepage = async (req, res) => {
 
-    connection.query(
-        'SELECT * FROM `user` ',
-        function (err, results, fields) {
-            console.log('>>> check mysql')
-            // console.log(results); // results contains rows returned by server
-            results.map((row) => {
-                data.push({
-                    id: row.id,
-                    firstName: row.firstName,
-                    lastName: row.lastName,
-                    email: row.email,
-                    address: row.address
-                })
-            });
-            return res.render('index.ejs', { dataUser: data, test: 'abc tring test' })
+    const [rows, fields] = await pool.execute('SELECT * FROM `user`')
+    return res.render('index.ejs', { dataUser: rows, test: 'abc tring test' })
+}
 
-        })
+let getDetailPage = async (req, res) => {
+    let userId = req.params.id
+    let [user] = await pool.execute(`select * from user where id = ?`, [userId])
+    return res.send(JSON.stringify(user))
 }
 
 module.exports = {
-    getHomepage
+    getHomepage, getDetailPage
 }
