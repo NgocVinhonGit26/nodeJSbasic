@@ -59,3 +59,7 @@ body {
   .upload-file-container label {
     display: block;
   }
+
+  hr {
+    border-top: 3px solid #eee !important;
+  }
